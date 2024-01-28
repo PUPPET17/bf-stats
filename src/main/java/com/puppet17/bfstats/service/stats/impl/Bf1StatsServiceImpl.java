@@ -2,6 +2,8 @@ package com.puppet17.bfstats.service.stats.impl;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.puppet17.bfstats.pojo.PlayerForm;
+import com.puppet17.bfstats.pojo.PlayerStats;
 import com.puppet17.bfstats.service.stats.Bf1StatsService;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -20,16 +22,28 @@ import java.io.IOException;
 @Service
 public class Bf1StatsServiceImpl implements Bf1StatsService {
 
+    private Gson gson = new Gson();
+
+    /**
+     * Gets player stats.
+     *
+     * @param name the name
+     * @return the player stats
+     */
     @Override
-    public String getPlayerStats(String name, String playerId) {
+    public PlayerStats getPlayerStatsAsEntity(String name) {
+        String statData = getPlayerStats(name);
+        return gson.fromJson(statData, PlayerStats.class);
+    }
+
+    public String getPlayerStats(String name) {
         HttpClient httpClient = HttpClients.createDefault();
 
-        // 完整的url: https://api.gametools.network/bf1/stats/?format_values=true&name=iiTzArcur&playerid=794397421&oid=2800753812&platform=pc&skip_battlelog=false&lang=en-us
-        // 根据传入的 name 和 playerId 构建 API 调用的 URL
-        String url = "https://api.gametools.network/bf1/stats/?format_values=true"
+        // 完整的url: https://api.gametools.network/bf1/all/?format_values=true&name=17puppet&platform=pc&skip_battlelog=false&lang=en-us
+        // 根据传入的 name 构建 API 调用的 URL
+        String url = "https://api.gametools.network/bf1/all/?format_values=true"
                 + "&name=" + name
-                + "&playerid=" + playerId
-                + "&oid=2800753812&platform=pc&skip_battlelog=false&lang=zh-tw";
+                + "&platform=pc&skip_battlelog=false&lang=en-us";
 
         HttpGet request = new HttpGet(url);
         request.addHeader("accept", "application/json");
@@ -50,5 +64,4 @@ public class Bf1StatsServiceImpl implements Bf1StatsService {
             return "Error occurred while fetching player stats: " + e.getMessage();
         }
     }
-
 }

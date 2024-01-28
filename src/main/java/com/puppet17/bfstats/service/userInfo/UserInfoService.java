@@ -19,12 +19,4 @@ public interface UserInfoService {
      */
     PlayerForm getPlayerInfoAsEntity(String name);
 
-    /**
-     * Gets player id.
-     *
-     * @param name the name
-     * @return the player id
-     */
-    String getPlayerId(String name);
-
 }

@@ -1,6 +1,7 @@
 package com.puppet17.bfstats.controller;
 
 import com.puppet17.bfstats.pojo.PlayerForm;
+import com.puppet17.bfstats.pojo.PlayerStats;
 import com.puppet17.bfstats.service.stats.Bf1StatsService;
 import com.puppet17.bfstats.service.userInfo.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,12 +37,15 @@ public class ApiController {
         return "playerInfo";
     }
 
-    @GetMapping("/playerStats")
-    public String getPlayerStats() {
-        String name = "17puppet";
-        String playerId = userInfoService.getPlayerId(name);
-        System.out.println("playerId = " + playerId);
-        return bf1StatsService.getPlayerStats( name, playerId);
+    @GetMapping("/playerStats/{name}")
+    public String getPlayerStats(@PathVariable String name, Model model) {
+        PlayerStats playerStats = bf1StatsService.getPlayerStatsAsEntity(name);
+        if (null!=playerStats){
+            model.addAttribute("playerStats",playerStats);
+            return "playerStats";
+        }else {
+            return "error";
+        }
     }
 
 }

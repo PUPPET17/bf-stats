@@ -1,14 +1,13 @@
 package com.puppet17.bfstats.service.userInfo;
 
 import com.puppet17.bfstats.pojo.PlayerForm;
-import com.puppet17.bfstats.service.stats.Bf1StatsService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+
 /**
  * @author PUPPET17
  * @version 1.0

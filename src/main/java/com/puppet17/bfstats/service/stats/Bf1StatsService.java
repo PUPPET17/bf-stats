@@ -1,6 +1,7 @@
 package com.puppet17.bfstats.service.stats;
 
 import com.google.gson.JsonObject;
+import com.puppet17.bfstats.pojo.PlayerStats;
 import org.springframework.http.ResponseEntity;
 
 /**
@@ -19,6 +20,6 @@ public interface Bf1StatsService {
      * @param playerId the player id
      * @return the player stats
      */
-    String getPlayerStats(String name, String playerId);
+    PlayerStats getPlayerStatsAsEntity(String name);
 
 }

@@ -23,7 +23,7 @@ import java.io.IOException;
 @Service
 public class UserInfoServiceImpl implements UserInfoService {
 
-    private final Gson gson = new Gson();
+    private Gson gson = new Gson();
 
     @Override
     public PlayerForm getPlayerInfoAsEntity(String name) {
@@ -34,8 +34,8 @@ public class UserInfoServiceImpl implements UserInfoService {
     public String getPlayerInfo(String name) {
         HttpClient httpClient = HttpClients.createDefault();
         // 完整的urL https://api.gametools.network/bf1/player/?name=17puppet&platform=pc&skip_battlelog=false
-        String url = "https://api.gametools.network/bf1/player/?name=" + name + "&platform=pc&skip_battlelog=false";
-
+        String url = "https://api.gametools.network/bf1/player/?name=" +
+                     name + "&platform=pc&skip_battlelog=false";
         HttpGet request = new HttpGet(url);
         request.addHeader("accept", "application/json");
         try {
@@ -43,35 +43,6 @@ public class UserInfoServiceImpl implements UserInfoService {
             int statusCode = response.getStatusLine().getStatusCode();
             if (statusCode == 200) {
                 return EntityUtils.toString(response.getEntity());
-            } else {
-                return "Error occurred while fetching player information. Status Code: " + statusCode;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "Error occurred while fetching player information: " + e.getMessage();
-        }
-    }
-
-    @Override
-    public String getPlayerId(String name) {
-
-        HttpClient httpClient = HttpClients.createDefault();
-        // 完整的urL https://api.gametools.network/bf1/player/?name=17puppet&platform=pc&skip_battlelog=false
-        String url = "https://api.gametools.network/bf1/player/?name=" + name + "&platform=pc&skip_battlelog=false";
-
-        HttpGet request = new HttpGet(url);
-        request.addHeader("accept", "application/json");
-        try {
-            HttpResponse response = httpClient.execute(request);
-            int statusCode = response.getStatusLine().getStatusCode();
-            if (statusCode == 200) {
-                Gson gson = new Gson();
-                String jsonResponse = EntityUtils.toString(response.getEntity());
-                // 将响应字符串解析为 JsonObject
-                JsonObject jsonObject = gson.fromJson(jsonResponse, JsonObject.class);
-                // 提取需要的字段
-                // 返回提取到的 playerId
-                return jsonObject.get("id").getAsString();
             } else {
                 return "Error occurred while fetching player information. Status Code: " + statusCode;
             }

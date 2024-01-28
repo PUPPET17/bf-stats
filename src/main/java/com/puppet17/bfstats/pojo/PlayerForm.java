@@ -14,12 +14,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PlayerForm {
 
-    String userId;
+    private String userId;
 
-    String avatar;
+    private String avatar;
 
-    String userName;
+    private String userName;
 
-    String id;
+    private String id;
 
 }

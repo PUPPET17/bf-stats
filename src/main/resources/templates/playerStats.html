@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Player Information</title>
+</head>
+
+<body>
+<h1>Get Player Stats</h1>
+<table border="1">
+    <tbody th:if="${playerForm != null}">
+    <tr>
+        <td>UserName:</td>
+        <td><span th:text="*{playerForm.userName}"></span></td>
+    </tr>
+    <tr>
+        <td>User ID:</td>
+        <td><span th:text="*{playerForm.userId}"></span></td>
+    </tr>
+    <tr>
+        <td>Avatar:</td>
+        <td><span th:text="*{playerForm.avatar}"></span></td>
+    </tr>
+    <tr>
+        <td>ID:</td>
+        <td><span th:text="*{playerForm.id}"></span></td>
+    </tr>
+    </tbody>
+    <tbody th:unless="${playerForm != null}">
+    <tr>
+        <td colspan="2">No player information available.</td>
+    </tr>
+    </tbody>
+</table>
+
+<div th:unless="${playerForm}">
+    <p>No player information available.</p>
+</div>
+<script>
+    document.getElementById("playerInfoForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevents the default form submission
+
+        // Get the value entered by the user
+        var playerName = document.getElementById("name").value;
+
+        // Construct the URL with the player name as a parameter
+        var url = "/playerInfo/" + encodeURIComponent(playerName);
+
+        // Redirect the page to the constructed URL
+        window.location.href = url;
+    });
+</script>
+</body>
+</html>
