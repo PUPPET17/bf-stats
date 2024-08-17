@@ -1,0 +1,20 @@
+server:
+  port: 8001
+
+spring:
+  application:
+    name: BfStatsApplication
+  thymeleaf:
+    cache: false
+    check-template: true
+    check-template-location: true
+    prefix: classpath:/templates/
+    enabled: true
+    encoding: UTF-8
+    suffix: .html
+  redis:
+    database: 15
+    host: localhost   # Redis服务器地
+    port: 6379             # Redis服务器连接端口
+    password: 123456        # Redis服务器连接密码（默认为空）
+    timeout: 3000           # Redis服务器链接超时配置

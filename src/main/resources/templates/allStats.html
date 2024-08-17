@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>历史查询记录</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #6c5ce7;
+            --secondary-color: #2d3436;
+            --background-color: #dfe6e9;
+            --card-background: #ffffff;
+            --accent-color: #fd79a8;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: var(--secondary-color);
+            background: linear-gradient(135deg, var(--background-color), #74b9ff);
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: var(--card-background);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            overflow-x: auto;
+            display: block;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #ddd;
+        }
+        .no-data {
+            text-align: center;
+            color: var(--accent-color);
+            font-style: italic;
+            padding: 20px;
+        }
+        @media screen and (max-width: 600px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+            thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+            tr {
+                margin-bottom: 15px;
+                border: 1px solid #ccc;
+            }
+            td {
+                border: none;
+                position: relative;
+                padding-left: 50%;
+            }
+            td:before {
+                position: absolute;
+                top: 6px;
+                left: 6px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                content: attr(data-label);
+                font-weight: bold;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>历史查询记录(最近10条)</h1>
+    <div th:if="${playerStats == null or playerStats.isEmpty()}" class="no-data">
+        <p>暂无统计数据可用。</p>
+    </div>
+    <div th:unless="${playerStats == null or playerStats.isEmpty()}">
+        <table>
+            <thead>
+            <tr>
+                <th data-label="Rank">Rank:</th>
+                <th data-label="Kills">Kills:</th>
+                <th data-label="Deaths">Deaths:</th>
+                <th data-label="KD">KD:</th>
+                <th data-label="LongestHeadshot">Longest Headshot:</th>
+                <th data-label="Heals">Heals:</th>
+                <th data-label="Skill">Skill:</th>
+                <th data-label="ScorePerMinute">Score Per Minute:</th>
+                <th data-label="KPM">Kills Per Minute:</th>
+                <th data-label="WinPercent">Win Percent:</th>
+                <th data-label="BestClass">Best Class:</th>
+                <th data-label="Accuracy">Accuracy:</th>
+                <th data-label="Headshots">Headshots:</th>
+                <th data-label="TimePlayed">Time Played:</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="stat : ${playerStats}">
+                <td data-label="Rank" th:text="${stat.rank}"></td>
+                <td data-label="Kills" th:text="${stat.kills}"></td>
+                <td data-label="Deaths" th:text="${stat.deaths}"></td>
+                <td data-label="KD" th:text="${stat.killDeath}"></td>
+                <td data-label="LongestHeadshot" th:text="${stat.longestHeadShot}"></td>
+                <td data-label="Heals" th:text="${stat.heals}"></td>
+                <td data-label="Skill" th:text="${stat.skill}"></td>
+                <td data-label="ScorePerMinute" th:text="${stat.scorePerMinute}"></td>
+                <td data-label="KPM" th:text="${stat.killsPerMinute}"></td>
+                <td data-label="WinPercent" th:text="${stat.winPercent}"></td>
+                <td data-label="BestClass" th:text="${stat.bestClass}"></td>
+                <td data-label="accuracy" th:text="${stat.accuracy}"></td>
+                <td data-label="headshots" th:text="${stat.headshots}"></td>
+                <td data-label="timePlayed" th:text="${stat.timePlayed}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

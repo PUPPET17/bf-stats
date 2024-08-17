@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>玩家统计数据</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #6c5ce7;
+            --secondary-color: #2d3436;
+            --background-color: #dfe6e9;
+            --card-background: #ffffff;
+            --accent-color: #fd79a8;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            text-align: center;
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: var(--secondary-color);
+            background: linear-gradient(135deg, var(--background-color), #74b9ff);
+            padding: 20px;
+        }
+        .container {
+            text-align: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: var(--card-background);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #ddd;
+        }
+        img {
+            max-width: 50px;
+            max-height: 50px;
+        }
+        .no-data {
+            text-align: center;
+            color: var(--accent-color);
+            font-style: italic;
+        }
+        @media screen and (max-width: 600px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+            thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+            tr {
+                margin-bottom: 15px;
+            }
+            td {
+                border: none;
+                position: relative;
+                padding-left: 50%;
+            }
+            td:before {
+                position: absolute;
+                top: 6px;
+                left: 6px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                content: attr(data-label);
+                font-weight: bold;
+            }
+        }
+        /* 在现有的样式表中添加以下样式 */
+        .weapon-image-cell {
+            background-color: #333333; /* 浅灰色背景 */
+            text-align: center;
+        }
+        .weapon-image {
+            background-color: #333333;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>玩家统计数据</h1>
+    <div th:if="${playerStats != null}">
+        <table>
+            <thead>
+            <tr>
+                <th>Rank</th>
+                <th>Kills</th>
+                <th>Deaths</th>
+                <th>KD</th>
+                <th>Longest Headshot</th>
+                <th>Heals</th>
+                <th>Skill</th>
+                <th>Score Per Minute</th>
+                <th>Kills Per Minute</th>
+                <th>Win Percent</th>
+                <th>Best Class</th>
+                <th>Accuracy</th>
+                <th>Headshots</th>
+                <th>Time Played</th>
+                <th>Seconds Played</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td data-label="Rank" th:text="${playerStats.rank}"></td>
+                <td data-label="Kills" th:text="${playerStats.kills}"></td>
+                <td data-label="Deaths" th:text="${playerStats.deaths}"></td>
+                <td data-label="KD" th:text="${playerStats.killDeath}"></td>
+                <td data-label="Longest Headshot" th:text="${playerStats.longestHeadShot}"></td>
+                <td data-label="Heals" th:text="${playerStats.heals}"></td>
+                <td data-label="Skill" th:text="${playerStats.skill}"></td>
+                <td data-label="Score Per Minute" th:text="${playerStats.scorePerMinute}"></td>
+                <td data-label="KPM" th:text="${playerStats.killsPerMinute}"></td>
+                <td data-label="Win Percent" th:text="${playerStats.winPercent}"></td>
+                <td data-label="Best Class" th:text="${playerStats.bestClass}"></td>
+                <td data-label="Accuracy" th:text="${playerStats.accuracy}"></td>
+                <td data-label="Headshots" th:text="${playerStats.headshots}"></td>
+                <td data-label="Time Played" th:text="${playerStats.timePlayed}"></td>
+                <td data-label="Seconds Played" th:text="${playerStats.secondsPlayed}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <h2>武器统计</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Weapon Name</th>
+                <th>Type</th>
+                <th>Image</th>
+                <th>Kills</th>
+                <th>Kills Per Minute</th>
+                <th>Headshot Kills</th>
+                <th>Headshots</th>
+                <th>Shots Fired</th>
+                <th>Shots Hit</th>
+                <th>Accuracy</th>
+                <th>Hit/Kills</th>
+                <th>Time Equipped</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="weapon : ${playerStats.weapons}">
+                <td data-label="Name" th:text="${weapon.weaponName}"></td>
+                <td data-label="Type" th:text="${weapon.type}"></td>
+                <td data-label="Image" class="weapon-image-cell">
+                    <img th:src="${weapon.image}" alt="Weapon Image" class="weapon-image" />
+                </td>
+                <td data-label="Kills" th:text="${weapon.kills}"></td>
+                <td data-label="Kills Per Minute" th:text="${weapon.killsPerMinute}"></td>
+                <td data-label="Headshot Kills" th:text="${weapon.headshotKills}"></td>
+                <td data-label="Headshots" th:text="${weapon.headshots}"></td>
+                <td data-label="Shots Fired" th:text="${weapon.shotsFired}"></td>
+                <td data-label="Shots Hit" th:text="${weapon.shotsHit}"></td>
+                <td data-label="Accuracy" th:text="${weapon.accuracy}"></td>
+                <td data-label="Hit/Kills" th:text="${weapon.hitVKills}"></td>
+                <td data-label="Time Equipped" th:text="${weapon.timeEquipped}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:unless="${playerStats != null}" class="no-data">
+        <p>找不到该玩家的数据</p>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,98 @@
+body {
+    font-family: "Open Sans", sans-serif;
+    background-color: #e8e8e8;
+    margin: 0;
+    padding: 0;
+    height: 100vh; /* 使页面高度填满视窗 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.align-class {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px;
+}
+
+.table-container {
+    width: 100%;
+}
+
+h1, h3 {
+    color: #333;
+    text-align: center;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    background-color: #f1f1f1;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+th, td {
+    text-align: center;
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    font-weight: bold;
+    background-color: #f8f8f8;
+}
+
+img {
+    height: 50px;
+    width: auto;
+    border-radius: 50%;
+}
+
+.no-data {
+    text-align: center;
+    margin-top: 20px;
+    color: #666;
+}
+
+@media screen and (max-width: 600px) {
+    table {
+        border: 0;
+    }
+
+    table thead {
+        display: none;
+    }
+
+    table tr {
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    table td {
+        position: relative;
+        display: block;
+        text-align: right;
+        padding-left: 50%;
+        border-bottom: 1px solid #ddd;
+    }
+
+    table td::before {
+        position: absolute;
+        top: 50%;
+        left: 10px;
+        transform: translateY(-50%);
+        content: attr(data-label);
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    table td:last-child {
+        border-bottom: 0;
+    }
+}

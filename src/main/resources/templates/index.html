@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ch">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>首页</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #6c5ce7;
+            --secondary-color: #2d3436;
+            --background-color: #dfe6e9;
+            --form-background: #ffffff;
+            --accent-color: #fd79a8;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: var(--secondary-color);
+            background: linear-gradient(135deg, var(--background-color), #74b9ff);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+        }
+        .container {
+            max-width: 500px;
+            width: 100%;
+            background-color: var(--form-background);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--secondary-color);
+            font-size: 2em;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        .input-group {
+            margin-bottom: 25px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+        input[type="text"]:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        button {
+            flex: 1;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+        button:hover {
+            background-color: var(--accent-color);
+        }
+        button:active {
+            transform: scale(0.98);
+        }
+        /* 通知气泡样式 */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--accent-color);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            opacity: 0;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            transform: translateY(20px);
+            pointer-events: none;
+            font-size: 0.9em;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        .notification.show {
+            opacity: 1;
+            transform: translate(-50%, 0);
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="input-group">
+        <label for="playerName">玩家名字:</label>
+        <input type="text" id="playerName" name="playerName" required placeholder="输入玩家名字">
+    </div>
+    <div class="button-group">
+        <button onclick="submitForm('/playerInfo/')">基本信息</button>
+        <button onclick="submitForm('/playerStats/')">统计数据</button>
+        <button onclick="submitForm('/allStats/')">历史记录</button>
+    </div>
+</div>
+
+<div id="notification" class="notification"></div>
+
+<script>
+    function submitForm(baseUrl) {
+        const playerName = document.getElementById('playerName').value;
+        if (playerName) {
+            window.location.href = baseUrl + playerName;
+        } else {
+            showNotification('请输入玩家名字');
+        }
+    }
+
+    function showNotification(message) {
+        const notification = document.getElementById('notification');
+        notification.textContent = message;
+        notification.classList.add('show');
+
+        setTimeout(() => {
+            notification.classList.remove('show');
+        }, 3000);
+    }
+</script>
+</body>
+</html>
