@@ -1,6 +1,6 @@
 # **BF-Stats**
 
-[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.7.3-green.svg)](https://spring.io/projects/spring-boot)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.2.6-green.svg)](https://spring.io/projects/spring-boot)
 
 ## 项目简介
 
