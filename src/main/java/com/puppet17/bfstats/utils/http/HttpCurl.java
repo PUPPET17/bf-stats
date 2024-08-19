@@ -24,7 +24,7 @@ public class HttpCurl {
         return httpClient.execute(request);
     }
 
-    public static JsonObject getJsonObject(String url) {
+    public static JsonObject request(String url) {
 
         try {
             HttpResponse httpResponse = HttpCurl.curlGet(url);

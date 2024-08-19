@@ -63,6 +63,7 @@
         }
         input[type="text"]:focus {
             border-color: var(--primary-color);
+            box-shadow: 0 4px 12px var(--primary-color);
             outline: none;
         }
         .button-group {
@@ -110,6 +111,57 @@
             transform: translate(-50%, 0);
             pointer-events: auto;
         }
+
+        .custom-select-container {
+            display: inline-block;
+            position: relative;
+            width: 250px;
+        }
+
+        .custom-select-container select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            color: #333;
+            font-size: 16px;
+            font-family: 'Arial', sans-serif;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .custom-select-container::after {
+            content: '\25BC';
+            position: absolute;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: #888;
+            font-size: 16px;
+        }
+
+        .custom-select-container select:hover {
+            border-color: #aaa;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .custom-select-container select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 12px var(--primary-color);
+        }
+
+        .custom-select-container select option {
+            padding: 10px;
+            background: #fff;
+            color: #333;
+        }
     </style>
 </head>
 <body>
@@ -118,8 +170,16 @@
         <label for="playerName">玩家名字:</label>
         <input type="text" id="playerName" name="playerName" required placeholder="输入玩家名字">
     </div>
+    <div class="input-group">
+        <label for="gameVersion">选择游戏版本:</label>
+        <div class="custom-select-container">
+            <select id="gameVersion" name="gameVersion" required>
+                <option value="1">Battlefield 1</option>
+                <option value="V">Battlefield V</option>
+            </select>
+        </div>
+    </div>
     <div class="button-group">
-        <button onclick="submitForm('/playerInfo/')">基本信息</button>
         <button onclick="submitForm('/playerStats/')">统计数据</button>
         <button onclick="submitForm('/allStats/')">历史记录</button>
     </div>
@@ -130,10 +190,13 @@
 <script>
     function submitForm(baseUrl) {
         const playerName = document.getElementById('playerName').value;
-        if (playerName) {
-            window.location.href = baseUrl + playerName;
+        const gameVersion = document.getElementById('gameVersion').value;
+
+        if (playerName && gameVersion) {
+            const formattedVersion = encodeURIComponent(gameVersion);
+            window.location.href = `${baseUrl}${formattedVersion}/${playerName}`;
         } else {
-            showNotification('请输入玩家名字');
+            showNotification('请输入玩家名字并选择游戏版本');
         }
     }
 

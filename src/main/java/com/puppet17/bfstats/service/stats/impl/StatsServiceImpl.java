@@ -1,8 +1,10 @@
 package com.puppet17.bfstats.service.stats.impl;
 
 import com.google.gson.Gson;
+import com.puppet17.bfstats.commons.BattlefieldVersion;
 import com.puppet17.bfstats.po.PlayerStats;
 import com.puppet17.bfstats.service.stats.StatsService;
+import com.puppet17.bfstats.utils.http.HttpCurl;
 import com.puppet17.bfstats.utils.redis.RedisUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,8 +15,6 @@ import javax.annotation.Resource;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-
-import static com.puppet17.bfstats.utils.http.HttpCurl.getJsonObject;
 import static java.util.Locale.ENGLISH;
 
 /**
@@ -39,25 +39,25 @@ public class StatsServiceImpl implements StatsService {
      * @return the player stats
      */
     @Override
-    public PlayerStats getPlayerStatsAsEntity(String name) {
-        String url = "https://api.gametools.network/bf1/all/?format_values=true"
-                + "&name=" + name
-                + "&platform=pc&skip_battlelog=false&lang=en-us";
+    public PlayerStats getPlayerStatsAsEntity(String name, String versionName) {
+        BattlefieldVersion version = BattlefieldVersion.fromString(versionName);
+        String url = version.getUrl() + name;
         logger.info("Request URL: '{}'" , url);
 
-        String statData = Objects.requireNonNull(getJsonObject(url)).toString();
+        String statData = Objects.requireNonNull(HttpCurl.request(url)).toString();
         logger.info("Stat Data: '{}'" , statData);
         return gson.fromJson(statData, PlayerStats.class);
     }
-
+    
     @Override
-    public PlayerStats checkAndSavePlayerStat(PlayerStats newStat) {
-        String userName = newStat.getUserName();
-        userName = StringUtils.toLowerCase(userName, ENGLISH);
-        long size = redisUtil.lGetListSize(userName);
+    public PlayerStats checkAndSavePlayerStat(PlayerStats newStat, String version) {
+        
+        String userName = StringUtils.toLowerCase(newStat.getUserName(), ENGLISH);
+        String redisKey = userName + ":" + version;
+        
+        long size = redisUtil.lGetListSize(redisKey);
         if (size > 0) {
-            List<Object> playerStats = redisUtil.rangeList(userName, 0, -1);
-            
+            List<Object> playerStats = redisUtil.rangeList(redisKey, 0, -1);
             for (Object stat : playerStats) {
                 PlayerStats realStat = (PlayerStats) stat;
                 if (Objects.equals(realStat.getTimePlayed(), newStat.getTimePlayed())) {
@@ -66,19 +66,19 @@ public class StatsServiceImpl implements StatsService {
             }
         }
         
-        redisUtil.lSet(userName, newStat);
+        redisUtil.lSet(redisKey, newStat);
         
-        while (redisUtil.lGetListSize(userName) > 10) {
-            redisUtil.lRemove("userName", 1,userName);
+        while (redisUtil.lGetListSize(redisKey) > 10) {
+            redisUtil.lRemove(redisKey, 1, redisUtil.rangeList(redisKey, 0, 0).get(0));
         }
         
         return newStat;
     }
     
     @Override
-    public List<PlayerStats> getPlayerAllStats(String userName) {
+    public List<PlayerStats> getPlayerAllStats(String userName ,String version) {
         
-        List<?> objects = redisUtil.lGet(userName, 0, -1);
+        List<?> objects = redisUtil.lGet(userName + ":" + version, 0, -1);
         return objects.stream()
                 .map(o -> (PlayerStats) o)
                 .collect(Collectors.toList());

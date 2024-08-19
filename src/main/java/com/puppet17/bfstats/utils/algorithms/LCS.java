@@ -10,10 +10,8 @@ public class LCS {
         int m = s1.length();
         int n = s2.length();
 
-        // 构建一个二维数组来存储子问题的解
         int[][] dp = new int[m + 1][n + 1];
 
-        // 通过比较两个字符串，填充dp数组
         for (int i = 0; i <= m; i++) {
             for (int j = 0; j <= n; j++) {
                 if (i == 0 || j == 0) {
@@ -26,12 +24,10 @@ public class LCS {
             }
         }
 
-        // 构建最长公共子序列
         int index = dp[m][n];
         char[] lcs = new char[index];
         int i = m, j = n;
         while (i > 0 && j > 0) {
-            // 如果当前字符在s1和s2中都相同，则它是LCS的一部分
             if (s1.charAt(i - 1) == s2.charAt(j - 1)) {
                 lcs[index - 1] = s1.charAt(i - 1);
                 i--;

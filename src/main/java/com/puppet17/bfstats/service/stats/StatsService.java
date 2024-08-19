@@ -1,5 +1,6 @@
 package com.puppet17.bfstats.service.stats;
 
+import com.puppet17.bfstats.commons.BattlefieldVersion;
 import com.puppet17.bfstats.po.PlayerStats;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public interface StatsService {
      * @param playerId the player id
      * @return the player stats
      */
-    PlayerStats getPlayerStatsAsEntity(String name);
+    PlayerStats getPlayerStatsAsEntity(String name, String versionName);
 
     /**
      * 查看redis中是否已经有玩家的stats
@@ -30,9 +31,8 @@ public interface StatsService {
      * @param newStat the new stat
      * @return the player stats
      */
-    PlayerStats checkAndSavePlayerStat(PlayerStats newStat);
+    PlayerStats checkAndSavePlayerStat(PlayerStats newStat,String version);
     
-    List<PlayerStats> getPlayerAllStats(String userName);
-    
+    List<PlayerStats> getPlayerAllStats(String userName,String version);
     
 }
