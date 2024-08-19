@@ -6,7 +6,7 @@
 
 **BF-Stats** 是一个基于 Spring Boot、Thymeleaf 和 Redis 的应用程序，旨在提供《战地》系列游戏的玩家统计信息。集成 [GameTools API](https://api.gametools.network/docs#/)。
 
-**BF-Stats** is an application based on Spring Boot, Thymeleaf, and Redis, designed to provide player statistics for the Battlefield series. Integrated the [GameTools API](https://api.gametools.network/docs#/), currently supports retrieving detailed data for Battlefield 1.
+**BF-Stats** is an application based on Spring Boot, Thymeleaf, and Redis, designed to provide player statistics for the Battlefield series. Integrated the [GameTools API](https://api.gametools.network/docs#/).
 
 ## 未来发展 / Future Development
 
